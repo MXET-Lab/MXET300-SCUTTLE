@@ -8,7 +8,7 @@ This repository contains software (embedded Linux & Python) and hardware design 
 * low-cost
 
 ### Visit the [SCUTTLE™ Webpage](https://scuttlerobot.org).
-![SCUTTLE Robot](https://raw.githubusercontent.com/scuttlerobot/SCUTTLE/master/docs/index_files/image002.png)
+![SCUTTLE Robot](https://raw.github.com/MXET-Lab/MXET300-TA/blob/main/documents/images/SCUTTLE_mxet300_isometric1.png)
 
 ### License
 This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 License.  To view details [visit creativecommons.org](https://creativecommons.org/licenses/by-sa/4.0/legalcode)
