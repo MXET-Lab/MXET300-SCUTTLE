@@ -5,6 +5,13 @@
 # Before running, make sure to stop the default OLED service with the terminal command: 
 #            sudo systemctl stop oled.service
 
+# NOTE!!!
+# This code is intended for reference and to demonstrate the the functionality of the OLED display.
+# The code temporarily displays on the OLED while it is running and stops displaying when the script
+# is terminated. It is not intended to, and should not, replace the oled.py service file for continously
+# displaying to the OLED from boot. Please reference and use the oled.py file for this use case.
+
+
 import board
 import digitalio
 import netifaces as ni
@@ -32,10 +39,18 @@ oled = adafruit_ssd1306.SSD1306_I2C(screenwidth, screenheight, i2c, addr=address
 # Get a voltage reading from the INA219
 def getVoltage():
     ##########################################
-    # Task: Write your own code here to read and return a voltage from L1_ina
-    #       Remember to import the necessary script
+    # Task: Write your own code here to read and return the voltage reading from L1_ina
+    #       You must import the necessary python file in order to do this.
+    #       Try giving the import an alias similarily done in line 17 above.
+    #       This makes it convenient in referencing the import for use.
+    
+    #       The general format for retrieving the return of a function from another file is:
+    #       variable_name = filename_or_alias.function_name()
+    #       You can reference lines 31 through 33 as some examples.
+    
+    #       You should be able to accomplish this task with one line of code.
     ##########################################
-    return
+    return # Be sure to return your variable name for your getVoltage()
 
 # This function will try to find an IPv4 address from eth0 (ethernet) or wlan0 (wireless), in that order
 def getIp():
@@ -70,11 +85,22 @@ def displayText():
 
     font = ImageFont.load_default()                                         #load the default font for text
 
-    #Draw text on the image starting at pixel coordinates (0,20) with a default font and no background fill
+    #################################################
+    # Task: Line 93 will write to the display the robot name specified in the " ". 
+    #       Uncomment the line and give it a name of your choice. 
+    #       Take notice to the line and understand the format and arguments.
+    #################################################
+    # draw.text((40, 0), "Robot Name", font=font, fill=255)
+    
+    # The code in line 96 is drawing the IP text on the image starting at pixel coordinates (0,20) with a default font and no background fill.
     draw.text((0, 20), "IP: " + ip, font=font, fill=255)
 
     #################################################
-    # Task: Write your code here to call getVoltage() and add the value to the display 
+    # Task: Write your code here to call getVoltage() to return and add the value to the display.
+    #       Use lines 93 and 96 for displaying the robot name and IP to the OLED as a reference guide.
+    #       You will draw.text the "Robot Voltage: " starting at pixel coordinates (0,40).
+    #       Note that you must convert the voltage float value to a string in order for it to be accepted.
+    #       Be sure to include the unit for volts and format the display with a default font and no background fill.
     #################################################
 
     oled.image(image)                           #set the image to be displayed on the OLED                                        
