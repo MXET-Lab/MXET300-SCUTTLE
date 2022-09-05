@@ -62,13 +62,12 @@ def csv_write(list):
     csvFile.close()
 
 # A function for creating a row in a csv file
-def csv_row(list):
-    row = list.join(",")
-    with open('/tmp/excel_data.csv', 'a') as csvFile:
+def csv_row(items):
+    with open('/tmp/lidar.csv', 'a') as csvFile:
         writer = csv.writer(csvFile)
-        writer.writerow(row)
+        writer.writerow(items)
     csvFile.close()
 
 # A function to clear an existing CSV file
 def clear_file():
-    open('excel_data.csv', 'w').close()
+    open('/tmp/lidar.csv', 'w').close()

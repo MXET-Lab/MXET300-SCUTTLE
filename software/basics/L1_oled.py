@@ -5,6 +5,9 @@
 # Before running, make sure to stop the default OLED service with the terminal command: 
 #            sudo systemctl stop oled.service
 
+# To restart the default OLED service, run the terminal command: 
+#            sudo systemctl restart oled.service
+
 # NOTE!!!
 # This code is intended for reference and to demonstrate the the functionality of the OLED display.
 # The code temporarily displays on the OLED while it is running and stops displaying when the script
