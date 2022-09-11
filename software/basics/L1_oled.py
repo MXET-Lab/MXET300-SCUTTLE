@@ -44,12 +44,12 @@ def getVoltage():
     ##########################################
     # Task: Write your own code here to read and return the voltage reading from L1_ina
     #       You must import the necessary python file in order to do this.
-    #       Try giving the import an alias similarily done in line 17 above.
+    #       Try giving the import an alias similarily done in line 20 above.
     #       This makes it convenient in referencing the import for use.
     
     #       The general format for retrieving the return of a function from another file is:
     #       variable_name = filename_or_alias.function_name()
-    #       You can reference lines 31 through 33 as some examples.
+    #       You can reference lines 34 through 36 as some examples.
     
     #       You should be able to accomplish this task with one line of code.
     ##########################################
@@ -89,21 +89,21 @@ def displayText():
     font = ImageFont.load_default()                                         #load the default font for text
 
     #################################################
-    # Task: Line 93 will write to the display the robot name specified in the " ". 
+    # Task: Line 96  will write to the display the robot name specified in the " ". 
     #       Uncomment the line and give it a name of your choice. 
     #       Take notice to the line and understand the format and arguments.
     #################################################
     # draw.text((40, 0), "Robot Name", font=font, fill=255)
     
-    # The code in line 96 is drawing the IP text on the image starting at pixel coordinates (0,20) with a default font and no background fill.
+    # The code in line 99 is drawing the IP text on the image starting at pixel coordinates (0,20) with a default font and a background fill of 255.
     draw.text((0, 20), "IP: " + ip, font=font, fill=255)
 
     #################################################
     # Task: Write your code here to call getVoltage() to return and add the value to the display.
-    #       Use lines 93 and 96 for displaying the robot name and IP to the OLED as a reference guide.
+    #       Use lines 96 and 99 for displaying the robot name and IP to the OLED as a reference guide.
     #       You will draw.text the "Robot Voltage: " starting at pixel coordinates (0,40).
     #       Note that you must convert the voltage float value to a string in order for it to be accepted.
-    #       Be sure to include the unit for volts and format the display with a default font and no background fill.
+    #       Be sure to include the unit symbol for volts and format the display with a default font and a background fill of 255.
     #################################################
 
     oled.image(image)                           #set the image to be displayed on the OLED                                        
