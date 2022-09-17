@@ -5,9 +5,8 @@
 import cv2
 import numpy as np
 
-width  = 120  # width of image to process (pixels)
-height = 80 # height of image to process (pixels)
-filter = 'HSV'  # Use HSV to describe pixel color values
+width  = 240  # width of image to process (pixels)
+height = 160 # height of image to process (pixels)
 color_range = np.array([[0, 0, 0], [255, 255, 255]]) # declare HSV range before overwrighting with user inputs
 
 class MyFilter:
@@ -17,10 +16,7 @@ class MyFilter:
         image = cv2.resize(image,(width,height)) # resize the image
 
 # Grab the HSV inputs from the NodeRed selections by accesing the files 
-        if filter == 'RGB':
-            frame_to_thresh = image.copy()
-        else:
-            frame_to_thresh = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)  # convert image to hsv colorspace RENAME THIS TO IMAGE_HSV
+        hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)  # convert image to hsv colorspace RENAME THIS TO IMAGE_HSV
 
         with open('/tmp/h_min') as h_min_file:
             h_min_file.seek(0)
@@ -63,31 +59,28 @@ class MyFilter:
 
 # PROCESS THE IMAGE
         color_range = (((h_min), (s_min), (v_min)),((h_max), (s_max), (v_max)))
-        thresh = cv2.inRange(frame_to_thresh, color_range[0], color_range[1]) # Converts a 240x160x3 matrix to a 240x160x1 matrix
+        thresh = cv2.inRange(hsv_image, color_range[0], color_range[1]) # Converts a 240x160x3 matrix to a 240x160x1 matrix
         # cv2.inrange discovers the pixels that fall within the specified range and assigns 1's to these pixels and 0's to the others.
 
         # apply a blur function
         kernel = np.ones((5,5),np.uint8)
         mask = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel) # Apply blur
         mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel) # Blur again
-        mask = thresh
 
         cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)[-2] #generates number of contiguous "1" pixels
         center = None # create a variable for x, y location of target
 
         if len(cnts) > 0:   # begin processing if there are "1" pixels discovered
 
-            c = max(cnts, key=cv2.contourArea)  # return the largest target area
-            ((x, y), radius) = cv2.minEnclosingCircle(c)
-            # M = cv2.moments(c)
-            # center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))  # defines a circle around the largest target area
-            center = (int(x), int(y))  # defines a circle around the largest target area
+            c = max(cnts, key=cv2.contourArea)          # return the largest target area
+            x,y,w,h = cv2.boundingRect(c)               # Get bounding rectangle (x,y,w,h) of the largest contour
 
-            if radius > min_size:
+            center = (int(x+0.5*w), int(y+0.5*h))       # defines center of rectangle around the largest target area
 
-                cv2.circle(image, (int(x), int(y)), int(radius),(0, 255, 255), 2) #draw a circle on the image
-                cv2.circle(image, (int(x), int(y)), 3, (0, 0, 0), -1) # draw a dot on the target center
-                cv2.circle(image, (int(x), int(y)), 1, (255, 255, 255), -1) # draw a dot on the target center
+            if 0.5*w > min_size:
+                cv2.rectangle(image, (int(x), int(y)), (int(x+w), int(y+h)), (0, 255, 255), 2)  # draw bounding box
+                cv2.circle(image, center, 3, (0, 0, 0), -1) # draw a dot on the target center
+                cv2.circle(image, center, 1, (255, 255, 255), -1) # draw a dot on the target center
 
                 cv2.putText(image,"("+str(center[0])+","+str(center[1])+")", (center[0]+10,center[1]+15), cv2.FONT_HERSHEY_SIMPLEX, 0.2,(0,0,0),2,cv2.LINE_AA)
                 cv2.putText(image,"("+str(center[0])+","+str(center[1])+")", (center[0]+10,center[1]+15), cv2.FONT_HERSHEY_SIMPLEX, 0.2,(255,255,255),1,cv2.LINE_AA)
