@@ -267,7 +267,7 @@
         "order": 6,
         "width": "6",
         "height": "12",
-        "format": "<img src=\"http://192.168.8.1:8090/?action=stream\"/>",
+        "format": "<img src=\"http://192.168.1.1:8090/?action=stream\"/>",
         "storeOutMessages": true,
         "fwdInMessages": true,
         "templateScope": "local",

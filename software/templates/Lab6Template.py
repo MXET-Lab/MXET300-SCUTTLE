@@ -17,7 +17,7 @@ import csv
 import L2_speed_control as sc # closed loop control. Import speed_control for open-loop
 import L2_inverse_kinematics as inv #calculates wheel parameters from chassis
 import L2_kinematics as kin    # calculates chassis parameters from wheels
-import L2_log as log # log live data to local files
+import L1_log as log # log live data to local files
 #import L1_gamepad as gp # for accessing gamepad directly
 
 # CREATE A FUNCTION FOR DRIVING

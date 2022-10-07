@@ -35,7 +35,7 @@ def getPdCurrent():
 
     # calculate travel of both wheels simultaneously
     travel = encoders_t2 - encoders_t1      # compute change in both shaft encoders (degrees)
-    travel = encoders_t2 - encoders_t1      # array, 2x1 to indicate travel
+                                            # array, 2x1 to indicate travel
     trav_b = travel + 360                   # array variant b
     trav_c = travel - 360                   # array variant c
     mx = np.stack((travel, trav_b, trav_c)) # combine array variants
