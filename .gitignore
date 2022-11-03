@@ -1,2 +1,3 @@
 # Don't track content of these folders
 __pycache__
+__.DS_Store__
