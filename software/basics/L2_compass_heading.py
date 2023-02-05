@@ -26,12 +26,13 @@ mag_calibration = [0.00, 0.00, 0.00]
 def get_heading():
     
     x, y, z = imu.magnetic
+    
+    if x is not None and y is not None and z is not None: 
+        x -= mag_calibration[0]
+        y -= mag_calibration[1]
+        z -= mag_calibration[2]
 
-    x -= mag_calibration[0]
-    y -= mag_calibration[1]
-    z -= mag_calibration[2]
-
-    heading = np.degrees(np.arctan2(y,x))-declination_angle         # Calculate the compass heading in degrees
+        heading = np.degrees(np.arctan2(y,x))-declination_angle         # Calculate the compass heading in degrees
 
     return heading
 
