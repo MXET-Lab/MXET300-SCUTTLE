@@ -33,6 +33,9 @@ def get_heading():
         z -= mag_calibration[2]
 
         heading = np.degrees(np.arctan2(y,x))-declination_angle         # Calculate the compass heading in degrees
+        
+    else:
+        heading = 0
 
     return heading
 
