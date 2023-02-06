@@ -17,7 +17,7 @@ imu.mode = adafruit_bno055.MAGONLY_MODE
 # A declination of 7 is used for Mid-East Texas.
 declination_angle = 7
 
-# Insert the final calibrated magnetometer matrix in line 14 below. This is gathered from the print statement
+# Insert the final calibrated magnetometer matrix in line 24 below. This is gathered from the print statement
 # in the "Calibrate the Magnetometer" Section of the "Magnetometer_Compass_Calibration.ipynb" jupyter notebook.
 # You can copy the matrix out right from the print statement and paste it into the "mag_calibration" list below.
 # Place holders of 0.00 have been used for the x,y,z values.
