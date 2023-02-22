@@ -21,16 +21,25 @@ declination_angle = 7
 # in the "Calibrate the Magnetometer" Section of the "Magnetometer_Compass_Calibration.ipynb" jupyter notebook.
 # You can copy the matrix out right from the print statement and paste it into the "mag_calibration" list below.
 # Place holders of 0.00 have been used for the x,y,z values.
-mag_calibration = [0.00, 0.00, 0.00]
+mag_calibration = [[0.00, 0.00], [0.00, 0.00], [0.00, 0.00]]
+
+x_min = mag_calibration[0][0]
+x_max = mag_calibration[0][1]
+y_min = mag_calibration[1][0]
+y_max = mag_calibration[1][1]
+
+def calibrate_magnetometer(original_value, axis_min, axis_max):
+    temp = (original_value - axis_min) / (axis_max - axis_min)
+    calibrated_value = 2*temp - 1
+    return calibrated_value
 
 def get_heading():
     
     x, y, z = imu.magnetic
     
     if x is not None and y is not None and z is not None: 
-        x -= mag_calibration[0]
-        y -= mag_calibration[1]
-        z -= mag_calibration[2]
+        x = calibrate_magnetometer(x, x_min, x_max)
+        y = calibrate_magnetometer(y, y_min, y_max)
 
         heading = np.degrees(np.arctan2(y,x))-declination_angle         # Calculate the compass heading in degrees
         
