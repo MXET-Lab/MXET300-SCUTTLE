@@ -28,9 +28,15 @@ x_max = mag_calibration[0][1]
 y_min = mag_calibration[1][0]
 y_max = mag_calibration[1][1]
 
-def calibrate_magnetometer(original_value, axis_min, axis_max):
+# calibrate magnetometer values to range of [-1 1]
+def calibrate_magnetometer(original_value, axis_min, axis_max): 
+    
+    # re-scale the returned values to a ratio of the value to it's maximum value (0 to 1)
     temp = (original_value - axis_min) / (axis_max - axis_min)
+    
+    # re-center the values about zero, and expand the range to +/- 1
     calibrated_value = 2*temp - 1
+    
     return calibrated_value
 
 def get_heading():
