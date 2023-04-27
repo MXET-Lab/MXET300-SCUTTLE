@@ -11,10 +11,17 @@ import L1_motor as m                               # for controlling motors
 u_integral = 0
 phi_max = 7.
 DRS = 1.0                                           # direct rescaling - for open-loop motor duty
-kp = 0.04                                           # proportional term
-ki = 0.04                                           # integral term
-kd = 0.00                                            # derivative term
-pidGains = np.array([kp, ki, kd])                   # form an array to collect pid gains.
+
+kp_left = 0.04                                           # proportional term
+ki_left = 0.04                                           # integral term
+kd_left = 0.00                                            # derivative term
+
+kp_right = 0.04                                           # proportional term
+ki_right = 0.04                                           # integral term
+kd_right = 0.00                                            # derivative term
+pidGains = np.array([[kp_left, kp_right], 
+                     [ki_left, ki_right], 
+                     [kd_left, kd_right]])                   # form an array to collect pid gains.
 
 # a function for converting target rotational speeds to PWMs without feedback
 def openLoop(pdl, pdr):
@@ -46,7 +53,7 @@ def driveOpenLoop(pdTargets):                       # Pass Phi dot targets to th
 
 def driveClosedLoop(pdt, pdc, de_dt):               # this function runs motors for closed loop PID control
     global u_integral
-    e = (pdt - pdc)                                 # compute error
+    e = np.array(pdt - pdc)                                 # compute error
 
     kp = pidGains[0]                                # gains are input as constants, above
     ki = pidGains[1]

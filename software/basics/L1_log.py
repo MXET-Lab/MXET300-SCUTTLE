@@ -54,4 +54,4 @@ def csv_row(items):
 
 # A function to clear an existing CSV file
 def clear_file():
-    open('/tmp/lidar.csv', 'w').close()
+    open('/tmp/excel_data.csv', 'w').close()
