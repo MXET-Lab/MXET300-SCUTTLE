@@ -8,8 +8,8 @@ import csv      # for handling comma-separated-values file type
 
 # A function for populating 2 text files with updating variables
 def logArray(values):                                       # this function takes a 2-element array called val
-    txt = open("/home/pi/basics/a.txt", 'w+')           # file for generic variable a
-    txt2 = open("/home/pi/basics/b.txt", 'w+')          # file for generic variable b
+    txt = open("/home/pi/mxet300_lab/a.txt", 'w+')           # file for generic variable a
+    txt2 = open("/home/pi/mxet300_lab/b.txt", 'w+')          # file for generic variable b
     a = round(values[0], 2)
     b = round(values[1], 2)
     txt.write(str(a))
@@ -18,8 +18,8 @@ def logArray(values):                                       # this function take
     txt2.close()
 
 # A function for sending 1 value to a log file of specified name
-def uniqueFile(value, fileName):                            # this function takes a 2-element array called val
-    txt = open("/home/pi/basics/" + fileName, 'w+')     # file with specified name
+def uniqueFile(value, fileName):                                    # this function takes a 2-element array called val
+    txt = open("/home/pi/mxet300_lab/" + fileName, 'w+')     # file with specified name
     myValue = round(value, 2)
     txt.write(str(myValue))
     txt.close()
@@ -47,7 +47,7 @@ def csv_write(list):
 
 # A function for creating a row in a csv file
 def csv_row(items):
-    with open('/tmp/lidar.csv', 'a') as csvFile:
+    with open('/tmp/excel_data.csv', 'a') as csvFile:
         writer = csv.writer(csvFile)
         writer.writerow(items)
     csvFile.close()
