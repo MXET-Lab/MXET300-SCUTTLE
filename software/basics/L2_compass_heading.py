@@ -51,6 +51,9 @@ def get_heading():
         
     else:
         heading = 0
+        
+    # flip the heading sign where facing west is positive and facing east is negative
+    heading = -heading
 
     return heading
 
