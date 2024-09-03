@@ -38,7 +38,7 @@ class OledDisplay:
         
         # Set up the INA219 sensor
         try:
-            self.ina = INA219(self.i2c, 0x44)
+            self.ina219 = INA219(self.i2c, 0x44)
         except Exception as ex:
             print("Failed to start current sensor")
 
@@ -50,7 +50,8 @@ class OledDisplay:
         self.oled.show()
 
     def updateVoltage(self):
-        self.voltage = round(self.ina.bus_voltage, 2)
+        battery_voltage = self.ina219.bus_voltage + self.ina219.shunt_voltage
+        self.voltage = round(battery_voltage, 2)
 
     def startIpUpdater(self):
         self.ipUpdateThread.start()
@@ -102,7 +103,7 @@ class OledDisplay:
         draw.text((0, 30), "SSID: " + self.ssid, font=font, fill=255)
 
         
-        if self.ina is not None: 
+        if self.ina219 is not None: 
             self.updateVoltage()
             draw.text((0, 40), "Robot Voltage: " +  str(self.voltage) + "V" , font=font, fill=255)
 
