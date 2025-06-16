@@ -9,7 +9,7 @@ import numpy as np
 import time
 
 # Import internal programs
-import L1_lidar as lidar
+from L1_lidar import Lidar
 
 np.set_printoptions(precision=3)                    # after math operations, don't print long values
 
@@ -53,15 +53,32 @@ def sumVec(vec, loc):                               # add two vectors. (origin t
     return mySum                                    # return [x,y]
 
 
-def getNearest():                                   # combine multiple functions into one.  Call to get nearest obstacle.
-    scan = lidar.polarScan()                        # get a reading in meters and degrees
+def getNearest(scan):                               # combine multiple functions into one.  Call to get nearest obstacle.                        # get a reading in meters and degrees
     valids = getValid(scan)                         # remove the bad readings
     vec = nearest(valids)                           # find the nearest
     return vec                                      # pass the closest valid vector [m, deg]
 
 
 if __name__ == "__main__":
-    while True:
-        myVector = getNearest()                                 # call the function which utilizes several functions in this program
-        print("\n The nearest object (m,deg):\n", myVector)     # print the result
-        time.sleep(0.1)                                         # small delay
+
+    # Instantiate the Lidar object
+    lidarsensor = Lidar()
+
+    # Connect to the Lidar device
+    lidarsensor.connect()
+
+    # Start the Lidar thread
+    processor = lidarsensor.run()
+    time.sleep(1)  # Allow some time for the thread to start
+
+    # Continuously retrieve and print the Lidar data
+    try:
+        while True:
+            myVector = getNearest(lidarsensor.get())                                 # call the function which utilizes several functions in this program
+            print("\n The nearest object (m,deg):\n", myVector)     # print the result
+            time.sleep(0.5)
+    except KeyboardInterrupt:
+        print("Stopping Lidar...")
+    finally:
+        # Kill the Lidar thread when done
+        lidarsensor.kill(processor)

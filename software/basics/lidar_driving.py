@@ -4,10 +4,11 @@
 import socket
 import json
 import numpy as np
-import L1_lidar as lidar
+from L1_lidar import Lidar
 import L2_vector as vec
 import L2_speed_control as sc
 from time import sleep
+import time
 from threading import Thread
 
 class SCUTTLE:
@@ -31,9 +32,14 @@ class SCUTTLE:
         #NodeRED data in#
         self.dashBoardData = None
 
+        #LIDAR Controller#
+        self.lidar = Lidar()
+        self.lidar.connect()
+        self.lidarControllerThread = self.lidar.run()
+
         #LIDAR Thread#   
-        lidarThread = Thread(target=self.scan_loop, daemon=True)
-        lidarThread.start()
+        lidarPubThread = Thread(target=self.scan_loop, daemon=True)
+        lidarPubThread.start()
 
         #NodeRED Data Thread#
         self.dashBoardDataThread = Thread(target=self._dashBoardDataLoop, daemon=True)
@@ -44,19 +50,23 @@ class SCUTTLE:
         self.controlThread.start()
 
     def scan_loop(self):
+        start_time = time.time()
         while True:
             data = self.cartesian_scan()
             data_msg = data.encode('utf-8')
             self.dashBoardDatasock.sendto(data_msg, ("127.0.0.1", 3555))
-            sleep(.025)
+            sleep(0.5)
 
     def cartesian_scan(self):
         rows = ''
-        polar_data = lidar.polarScan(num_points=100)
+        polar_data = self.lidar.get()
+        if polar_data is None:
+            return rows
 
         for d,t in polar_data:
-            cartesian_point = vec.polar2cart(d,t)
-            rows += self.format_row(cartesian_point)
+            if d < 3.5:
+                cartesian_point = vec.polar2cart(d,t)
+                rows += self.format_row(cartesian_point)
 
         return rows[:-1]
 
@@ -115,4 +125,5 @@ if __name__ == "__main__":
         while True:
             sleep(1)
     except KeyboardInterrupt:
+        robot.lidar.kill(robot.lidarControllerThread)
         print("Stopping robot")
